@@ -6,7 +6,7 @@ import config from '../config'
 const signin = (req: any, res: any) => {
     User.findOne({
         "email": req.body.email
-    }, (err, user) => {
+    }, (err, user: any) => {
         console.log(user)
         if (err || !user)
             return res.status('401').json({
@@ -24,7 +24,8 @@ const signin = (req: any, res: any) => {
         }, config.jwtSecret)
 
         res.cookie("t", token, {
-            expire: new Date() + 9999
+            expire: new Date(new Date().getTime() + 9999)
+
         })
 
         return res.json({
