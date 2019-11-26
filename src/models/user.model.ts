@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    photo: {
+        data: Buffer,
+        contentType: String
+    },
     updated: Date,
     hashed_password: {
         type: String,
