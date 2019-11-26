@@ -25,7 +25,6 @@ const signin = (req: any, res: any) => {
 
         res.cookie("t", token, {
             expire: new Date(new Date().getTime() + 9999)
-
         })
 
         return res.json({
