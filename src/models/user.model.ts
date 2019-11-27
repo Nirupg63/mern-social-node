@@ -31,7 +31,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: "Password is required"
     },
-    salt: String
+    salt: String,
+    following: [{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
+    followers: [{type: mongoose.Schema.Types.ObjectId, ref:'User'}]
 })
 
 UserSchema
