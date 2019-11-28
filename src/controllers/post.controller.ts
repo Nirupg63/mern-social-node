@@ -4,7 +4,7 @@ import errorHandler from './../helpers/dbErrorHandler'
 import formidable from 'formidable'
 import fs from 'fs'
 
-const create = (req, res, next) => {
+const create = (req: any, res: any, next: any) => {
     let form = new formidable.IncomingForm()
     form.keepExtensions = true
     form.parse(req, (err, fields, files) => {
@@ -30,7 +30,7 @@ const create = (req, res, next) => {
     })
 }
 
-const postByID = (req, res, next, id) => {
+const postByID = (req: any, res: any, next: any, id: any) => {
     Post.findById(id)
         .populate('postedBy', '_id name')
         .exec((err, post) => {
@@ -43,7 +43,7 @@ const postByID = (req, res, next, id) => {
         })
 }
 
-const listByUser = (req, res) => {
+const listByUser = (req: any, res: any) => {
     Post.find({ postedBy: req.profile._id })
         .populate('comments', 'text created')
         .populate('comments.postedBy', '_id name')
@@ -59,7 +59,7 @@ const listByUser = (req, res) => {
         })
 }
 
-const listNewsFeed = (req, res) => {
+const listNewsFeed = (req: any, res: any) => {
     let following = req.profile.following
     following.push(req.profile._id)
     Post.find({ postedBy: { $in: req.profile.following } })
@@ -77,7 +77,7 @@ const listNewsFeed = (req, res) => {
         })
 }
 
-const remove = (req, res) => {
+const remove = (req: any, res: any) => {
     let post = req.post
     post.remove((err, deletedPost) => {
         if (err) {
@@ -89,12 +89,12 @@ const remove = (req, res) => {
     })
 }
 
-const photo = (req, res, next) => {
+const photo = (req: any, res: any, next: any) => {
     res.set("Content-Type", req.post.photo.contentType)
     return res.send(req.post.photo.data)
 }
 
-const like = (req, res) => {
+const like = (req: any, res: any) => {
     Post.findByIdAndUpdate(req.body.postId, { $push: { likes: req.body.userId } }, { new: true })
         .exec((err, result) => {
             if (err) {
@@ -106,7 +106,7 @@ const like = (req, res) => {
         })
 }
 
-const unlike = (req, res) => {
+const unlike = (req: any, res: any) => {
     Post.findByIdAndUpdate(req.body.postId, { $pull: { likes: req.body.userId } }, { new: true })
         .exec((err, result) => {
             if (err) {
@@ -119,7 +119,7 @@ const unlike = (req, res) => {
 }
 
 
-const comment = (req, res) => {
+const comment = (req: any, res: any) => {
     let comment = req.body.comment
     comment.postedBy = req.body.userId
     Post.findByIdAndUpdate(req.body.postId, { $push: { comments: comment } }, { new: true })
@@ -134,7 +134,7 @@ const comment = (req, res) => {
             res.json(result)
         })
 }
-const uncomment = (req, res) => {
+const uncomment = (req: any, res: any) => {
     let comment = req.body.comment
     Post.findByIdAndUpdate(req.body.postId, { $pull: { comments: { _id: comment._id } } }, { new: true })
         .populate('comments.postedBy', '_id name')
@@ -149,7 +149,7 @@ const uncomment = (req, res) => {
         })
 }
 
-const isPoster = (req, res, next) => {
+const isPoster = (req: any, res: any, next: any) => {
     let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id
     if (!isPoster) {
         return res.status('403').json({

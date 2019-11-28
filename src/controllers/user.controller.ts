@@ -3,7 +3,6 @@ import _ from 'lodash'
 import errorHandler from './../helpers/dbErrorHandler'
 import formidable from 'formidable'
 import fs from 'fs'
-var profileImage = require('../assets/images/profile-pic.png')
 
 const create = (req: any, res: any, next: any) => {
     const user = new User(req.body)
@@ -106,7 +105,7 @@ const photo = (req: any, res: any, next: any) => {
 }
 
 const defaultPhoto = (req: any, res: any) => {
-    return res.sendFile(process.cwd() + profileImage)
+    return res.send(200)
 }
 
 const addFollowing = (req: any, res: any, next: any) => {
@@ -194,5 +193,6 @@ export default {
     addFollower,
     addFollowing,
     removeFollower,
-    removeFollowing
+    removeFollowing,
+    findPeople
 }
