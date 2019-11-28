@@ -24,6 +24,9 @@ router.route('/api/users/photo/:userId')
 router.route('/api/users/defaultphoto')
     .get(userCtrl.defaultPhoto)
 
+router.route('/api/users/findpeople/:userId')
+    .get(authCtrl.requireSignin, userCtrl.findPeople)
+
 router.param('userId', userCtrl.userByID)
 
 
